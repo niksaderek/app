@@ -51,28 +51,8 @@ st.markdown("""
 
 st.write("Enter the number of **billable calls** to predict revenue, spend, and profit.")
 
-# Use session_state to manage input and clear it when needed
-if 'converted_calls' not in st.session_state:
-    st.session_state.converted_calls = ""
-
 # User Input using text_input and checking validity
-converted_calls_input = st.text_input("Enter Billable Calls (Leave blank for no input):", value=st.session_state.converted_calls)
-
-# Set the value in session_state when input changes
-st.session_state.converted_calls = converted_calls_input
-
-# Handle clear button action
-def clear_input():
-    st.session_state.converted_calls = ""
-
-# Create columns for Predict and Clear buttons side by side
-col1, col2 = st.columns([4, 1])
-
-with col1:
-    predict_button = st.button("Predict")
-
-with col2:
-    clear_button = st.button("Clear", on_click=clear_input)
+converted_calls_input = st.text_input("Enter Billable Calls (Leave blank for no input):")
 
 # Check if the input is valid (either empty or a valid number)
 if converted_calls_input == "":
@@ -99,7 +79,7 @@ def calculate_weekly_values(daily_revenue, daily_spend, daily_profit):
     return weekly_revenue, weekly_spend, weekly_profit
 
 # Run Prediction and Display Results
-if predict_button:
+if st.button("Predict"):
     if converted_calls and converted_calls > 0:  # Ensure input is valid
         revenue, spend, profit = predict(converted_calls)
 
