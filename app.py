@@ -29,7 +29,7 @@ st.title("📈 **Predictive Model v.06**")
 st.markdown("""
     <style>
         .stButton>button {
-            background-color: #3e7c7b;
+            background-color: #0076d6; /* Tableau blue */
             color: white;
             font-weight: bold;
             border-radius: 10px;
@@ -61,16 +61,31 @@ def predict(converted_calls):
     predicted_profit = rf_model_profit.predict(input_data)[0]
     return predicted_revenue, predicted_spend, predicted_profit
 
+# Calculate weekly revenue, spend, and profit (assuming 5 workdays per week)
+def calculate_weekly_values(daily_revenue, daily_spend, daily_profit):
+    weekly_revenue = daily_revenue * 5
+    weekly_spend = daily_spend * 5
+    weekly_profit = daily_profit * 5
+    return weekly_revenue, weekly_spend, weekly_profit
+
 # Run Prediction and Display Results
 if st.button("Predict"):
     revenue, spend, profit = predict(converted_calls)
-    st.success(f"📊 **Predicted Revenue:** ${revenue:,.2f}")
-    st.info(f"💰 **Predicted Spend:** ${spend:,.2f}")
-    st.warning(f"📈 **Predicted Profit:** ${profit:,.2f}")
     
-    # Add a small Tableau-inspired data visualization
+    st.success(f"📊 **Predicted Revenue (Daily):** ${revenue:,.2f}")
+    st.info(f"💰 **Predicted Spend (Daily):** ${spend:,.2f}")
+    st.warning(f"📈 **Predicted Profit (Daily):** ${profit:,.2f}")
+    
+    # Calculate expected weekly values
+    weekly_revenue, weekly_spend, weekly_profit = calculate_weekly_values(revenue, spend, profit)
+    
+    st.success(f"📊 **Expected Weekly Revenue:** ${weekly_revenue:,.2f}")
+    st.info(f"💰 **Expected Weekly Spend:** ${weekly_spend:,.2f}")
+    st.warning(f"📈 **Expected Weekly Profit:** ${weekly_profit:,.2f}")
+    
+    # Add a small Tableau-inspired data visualization (still just a placeholder)
     st.markdown("""
-    <div style="width: 100%; height: 300px; background-color: #f5f5f5; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; color: #3e7c7b;">
+    <div style="width: 100%; height: 300px; background-color: #f5f5f5; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; color: #0076d6;">
         Predictive Insights
     </div>
     """, unsafe_allow_html=True)
