@@ -1,12 +1,21 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import streamlit as st
 import pandas as pd
 import joblib
+import os
+import urllib.request
+
+# Define model filenames
+model_files = {
+    "rf_model_revenue": "rf_model_revenue.pkl",
+    "rf_model_spend": "rf_model_spend.pkl",
+    "rf_model_profit": "rf_model_profit.pkl"
+}
+
+# Ensure models exist locally; download if missing
+for model_name, model_file in model_files.items():
+    if not os.path.exists(model_file):
+        url = f"https://raw.githubusercontent.com/niksaderek/app/main/{model_file}"
+        urllib.request.urlretrieve(url, model_file)
 
 # Load trained models
 rf_model_revenue = joblib.load("rf_model_revenue.pkl")
@@ -34,4 +43,3 @@ if st.button("Predict"):
     st.success(f"📊 **Predicted Revenue:** ${revenue:,.2f}")
     st.info(f"💰 **Predicted Spend:** ${spend:,.2f}")
     st.warning(f"📈 **Predicted Profit:** ${profit:,.2f}")
-
