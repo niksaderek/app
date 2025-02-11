@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import os
 import urllib.request
+import altair as alt
 
 # Define model filenames
 model_files = {
@@ -83,17 +84,27 @@ if st.button("Predict"):
         daily_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [revenue, spend, profit]
-        }).set_index("Prediction")
-        
-        # Bar chart with gradient blue color for daily predictions
-        st.bar_chart(daily_data["Amount"], color=["#0076d6", "#3385d6", "#66a3ff"])
+        })
+
+        # Create a bar chart for daily predictions with Altair
+        daily_chart = alt.Chart(daily_data).mark_bar().encode(
+            x='Prediction',
+            y='Amount',
+            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#0076d6', '#3385d6', '#66a3ff']))
+        )
+        st.altair_chart(daily_chart, use_container_width=True)
 
     with col2:
         st.markdown("### **Weekly Predictions**")
         weekly_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
-        }).set_index("Prediction")
-        
-        # Bar chart with different gradient blue color for weekly predictions
-        st.bar_chart(weekly_data["Amount"], color=["#005fa3", "#0066b3", "#0076d6"])
+        })
+
+        # Create a bar chart for weekly predictions with Altair
+        weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
+            x='Prediction',
+            y='Amount',
+            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
+        )
+        st.altair_chart(weekly_chart, use_container_width=True)
