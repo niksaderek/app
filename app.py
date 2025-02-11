@@ -76,7 +76,7 @@ if st.button("Predict"):
     # Calculate expected weekly values
     weekly_revenue, weekly_spend, weekly_profit = calculate_weekly_values(revenue, spend, profit)
 
-    # Create two columns for displaying daily and weekly predictions side by side with increased spacing
+    # Create two columns for displaying daily and weekly predictions side by side
     col1, col2 = st.columns(2)
 
     with col1:
@@ -85,14 +85,18 @@ if st.button("Predict"):
         st.write(f"💰 **Spend**: ${spend:,.2f}")
         st.write(f"📈 **Profit**: ${profit:,.2f}")
         
-        # Create a bar chart for daily predictions with a blue gradient
+        # Create a bar chart for daily predictions with Altair
         daily_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [revenue, spend, profit]
         })
 
-        # Apply a blue gradient for the bars
-        st.bar_chart(daily_data.set_index('Prediction'), use_container_width=True)
+        daily_chart = alt.Chart(daily_data).mark_bar().encode(
+            x='Prediction',
+            y='Amount',
+            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#0076d6', '#3385d6', '#66a3ff']))
+        )
+        st.altair_chart(daily_chart, use_container_width=True)
 
     with col2:
         st.markdown("### **Weekly Predictions**")
@@ -100,11 +104,15 @@ if st.button("Predict"):
         st.write(f"💰 **Spend**: ${weekly_spend:,.2f}")
         st.write(f"📈 **Profit**: ${weekly_profit:,.2f}")
         
-        # Create a bar chart for weekly predictions with a blue gradient
+        # Create a bar chart for weekly predictions with Altair
         weekly_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
         })
 
-        # Apply a blue gradient for the bars
-        st.bar_chart(weekly_data.set_index('Prediction'), use_container_width=True)
+        weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
+            x='Prediction',
+            y='Amount',
+            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
+        )
+        st.altair_chart(weekly_chart, use_container_width=True)
