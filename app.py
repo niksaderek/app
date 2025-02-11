@@ -51,8 +51,20 @@ st.markdown("""
 
 st.write("Enter the number of **billable calls** to predict revenue, spend, and profit.")
 
+# Use session_state to manage input and clear it when needed
+if 'converted_calls' not in st.session_state:
+    st.session_state.converted_calls = ""
+
 # User Input using text_input and checking validity
-converted_calls_input = st.text_input("Enter Billable Calls (Leave blank for no input):")
+converted_calls_input = st.text_input("Enter Billable Calls (Leave blank for no input):", value=st.session_state.converted_calls)
+
+# Set the value in session_state when input changes
+st.session_state.converted_calls = converted_calls_input
+
+# Handle clear button to reset the input field
+if st.button("Clear"):
+    st.session_state.converted_calls = ""
+    st.experimental_rerun()  # Rerun the script to refresh the page
 
 # Check if the input is valid (either empty or a valid number)
 if converted_calls_input == "":
