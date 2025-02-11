@@ -88,29 +88,14 @@ if st.button("Predict"):
     
     with col1:
         st.markdown("### **Daily Predictions**")
-        st.write(f"📊 **Revenue:** ${revenue:,.2f}")
-        st.write(f"💰 **Spend:** ${spend:,.2f}")
-        st.write(f"📈 **Profit:** ${profit:,.2f}")
+        st.bar_chart(pd.DataFrame({
+            "Prediction": ["Revenue", "Spend", "Profit"],
+            "Amount": [revenue, spend, profit]
+        }).set_index("Prediction"))
     
     with col2:
         st.markdown("### **Weekly Predictions**")
-        st.write(f"📊 **Revenue (Week):** ${weekly_revenue:,.2f}")
-        st.write(f"💰 **Spend (Week):** ${weekly_spend:,.2f}")
-        st.write(f"📈 **Profit (Week):** ${weekly_profit:,.2f}")
-    
-    # Add a bar chart to visualize the predictions (Daily and Weekly)
-    st.markdown("""
-    <div style="width: 100%; height: 300px; background-color: #f5f5f5; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; color: #0076d6;">
-        Predictive Insights
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Create a DataFrame for bar chart visualization
-    data = pd.DataFrame({
-        "Prediction Type": ["Revenue", "Spend", "Profit"],
-        "Daily Values": [revenue, spend, profit],
-        "Weekly Values": [weekly_revenue, weekly_spend, weekly_profit]
-    })
-
-    # Plot the bar chart using Streamlit's built-in method
-    st.bar_chart(data.set_index("Prediction Type"))
+        st.bar_chart(pd.DataFrame({
+            "Prediction": ["Revenue", "Spend", "Profit"],
+            "Amount": [weekly_revenue, weekly_spend, weekly_profit]
+        }).set_index("Prediction"))
