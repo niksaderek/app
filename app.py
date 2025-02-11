@@ -35,9 +35,3 @@ if st.button("Predict"):
     st.info(f"💰 **Predicted Spend:** ${spend:,.2f}")
     st.warning(f"📈 **Predicted Profit:** ${profit:,.2f}")
 
-
-# In[ ]:
-
-
-jupyter nbconvert --to script app.ipynb
-
