@@ -76,7 +76,7 @@ if st.button("Predict"):
     # Calculate expected weekly values
     weekly_revenue, weekly_spend, weekly_profit = calculate_weekly_values(revenue, spend, profit)
 
-    # Create two columns for displaying daily and weekly predictions side by side
+    # Create two columns for displaying daily and weekly predictions side by side with increased spacing
     col1, col2 = st.columns(2)
 
     with col1:
@@ -90,6 +90,9 @@ if st.button("Predict"):
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [revenue, spend, profit]
         })
+
+        # Format the values in the chart (rounded and thousand separator)
+        daily_data['Amount'] = daily_data['Amount'].apply(lambda x: f"${x:,.2f}")
 
         daily_chart = alt.Chart(daily_data).mark_bar().encode(
             x='Prediction',
@@ -110,9 +113,21 @@ if st.button("Predict"):
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
         })
 
+        # Format the values in the chart (rounded and thousand separator)
+        weekly_data['Amount'] = weekly_data['Amount'].apply(lambda x: f"${x:,.2f}")
+
         weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
             x='Prediction',
             y='Amount',
             color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
         )
         st.altair_chart(weekly_chart, use_container_width=True)
+
+    # Add space between columns and charts (through margin)
+    st.markdown("""
+        <style>
+            .stColumn {
+                margin-bottom: 40px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
