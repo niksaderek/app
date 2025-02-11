@@ -51,8 +51,8 @@ st.markdown("""
 
 st.write("Enter the number of **billable calls** to predict revenue, spend, and profit.")
 
-# User Input with enhanced styling
-converted_calls = st.number_input("Enter Billable Calls:", min_value=1, step=1, value=1, format="%d")
+# User Input with default value as blank
+converted_calls = st.number_input("Enter Billable Calls:", min_value=1, step=1, value=0, format="%d")
 
 # Prediction Function
 def predict(converted_calls):
@@ -71,48 +71,51 @@ def calculate_weekly_values(daily_revenue, daily_spend, daily_profit):
 
 # Run Prediction and Display Results
 if st.button("Predict"):
-    revenue, spend, profit = predict(converted_calls)
+    if converted_calls > 0:  # Ensure input is valid
+        revenue, spend, profit = predict(converted_calls)
 
-    # Calculate expected weekly values
-    weekly_revenue, weekly_spend, weekly_profit = calculate_weekly_values(revenue, spend, profit)
+        # Calculate expected weekly values
+        weekly_revenue, weekly_spend, weekly_profit = calculate_weekly_values(revenue, spend, profit)
 
-    # Create two columns for displaying daily and weekly predictions side by side
-    col1, col2 = st.columns(2)
+        # Create two columns for displaying daily and weekly predictions side by side
+        col1, col2 = st.columns(2)
 
-    with col1:
-        st.markdown("### **Daily Predictions**")
-        st.write(f"📊 **Revenue**: ${revenue:,.2f}")
-        st.write(f"💰 **Spend**: ${spend:,.2f}")
-        st.write(f"📈 **Profit**: ${profit:,.2f}")
-        
-        # Create a bar chart for daily predictions with Altair
-        daily_data = pd.DataFrame({
-            "Prediction": ["Revenue", "Spend", "Profit"],
-            "Amount": [revenue, spend, profit]
-        })
+        with col1:
+            st.markdown("### **Daily Predictions**")
+            st.write(f"📊 **Revenue**: ${revenue:,.2f}")
+            st.write(f"💰 **Spend**: ${spend:,.2f}")
+            st.write(f"📈 **Profit**: ${profit:,.2f}")
 
-        daily_chart = alt.Chart(daily_data).mark_bar().encode(
-            x='Prediction',
-            y='Amount',
-            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#0076d6', '#3385d6', '#66a3ff']))
-        )
-        st.altair_chart(daily_chart, use_container_width=True)
+            # Create a bar chart for daily predictions with Altair
+            daily_data = pd.DataFrame({
+                "Prediction": ["Revenue", "Spend", "Profit"],
+                "Amount": [revenue, spend, profit]
+            })
 
-    with col2:
-        st.markdown("### **Weekly Predictions**")
-        st.write(f"📊 **Revenue**: ${weekly_revenue:,.2f}")
-        st.write(f"💰 **Spend**: ${weekly_spend:,.2f}")
-        st.write(f"📈 **Profit**: ${weekly_profit:,.2f}")
-        
-        # Create a bar chart for weekly predictions with Altair
-        weekly_data = pd.DataFrame({
-            "Prediction": ["Revenue", "Spend", "Profit"],
-            "Amount": [weekly_revenue, weekly_spend, weekly_profit]
-        })
+            daily_chart = alt.Chart(daily_data).mark_bar().encode(
+                x='Prediction',
+                y='Amount',
+                color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#0076d6', '#3385d6', '#66a3ff']))
+            )
+            st.altair_chart(daily_chart, use_container_width=True)
 
-        weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
-            x='Prediction',
-            y='Amount',
-            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
-        )
-        st.altair_chart(weekly_chart, use_container_width=True)
+        with col2:
+            st.markdown("### **Weekly Predictions**")
+            st.write(f"📊 **Revenue**: ${weekly_revenue:,.2f}")
+            st.write(f"💰 **Spend**: ${weekly_spend:,.2f}")
+            st.write(f"📈 **Profit**: ${weekly_profit:,.2f}")
+
+            # Create a bar chart for weekly predictions with Altair
+            weekly_data = pd.DataFrame({
+                "Prediction": ["Revenue", "Spend", "Profit"],
+                "Amount": [weekly_revenue, weekly_spend, weekly_profit]
+            })
+
+            weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
+                x='Prediction',
+                y='Amount',
+                color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
+            )
+            st.altair_chart(weekly_chart, use_container_width=True)
+    else:
+        st.warning("Please enter a valid number of billable calls to proceed with the prediction.")
