@@ -81,12 +81,16 @@ if st.button("Predict"):
 
     with col1:
         st.markdown("### **Daily Predictions**")
+        st.write(f"📊 **Revenue**: ${revenue:,.2f}")
+        st.write(f"💰 **Spend**: ${spend:,.2f}")
+        st.write(f"📈 **Profit**: ${profit:,.2f}")
+        
+        # Create a bar chart for daily predictions with Altair
         daily_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [revenue, spend, profit]
         })
 
-        # Create a bar chart for daily predictions with Altair
         daily_chart = alt.Chart(daily_data).mark_bar().encode(
             x='Prediction',
             y='Amount',
@@ -96,12 +100,16 @@ if st.button("Predict"):
 
     with col2:
         st.markdown("### **Weekly Predictions**")
+        st.write(f"📊 **Revenue**: ${weekly_revenue:,.2f}")
+        st.write(f"💰 **Spend**: ${weekly_spend:,.2f}")
+        st.write(f"📈 **Profit**: ${weekly_profit:,.2f}")
+        
+        # Create a bar chart for weekly predictions with Altair
         weekly_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
         })
 
-        # Create a bar chart for weekly predictions with Altair
         weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
             x='Prediction',
             y='Amount',
