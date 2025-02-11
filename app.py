@@ -51,8 +51,17 @@ st.markdown("""
 
 st.write("Enter the number of **billable calls** to predict revenue, spend, and profit.")
 
-# User Input with default value as blank
-converted_calls = st.number_input("Enter Billable Calls:", min_value=1, step=1, value=0, format="%d")
+# User Input using text_input and checking validity
+converted_calls_input = st.text_input("Enter Billable Calls (Leave blank for no input):")
+
+# Check if the input is valid (either empty or a valid number)
+if converted_calls_input == "":
+    converted_calls = None
+else:
+    try:
+        converted_calls = int(converted_calls_input)
+    except ValueError:
+        converted_calls = None
 
 # Prediction Function
 def predict(converted_calls):
@@ -71,7 +80,7 @@ def calculate_weekly_values(daily_revenue, daily_spend, daily_profit):
 
 # Run Prediction and Display Results
 if st.button("Predict"):
-    if converted_calls > 0:  # Ensure input is valid
+    if converted_calls and converted_calls > 0:  # Ensure input is valid
         revenue, spend, profit = predict(converted_calls)
 
         # Calculate expected weekly values
