@@ -71,31 +71,29 @@ def calculate_weekly_values(daily_revenue, daily_spend, daily_profit):
 # Run Prediction and Display Results
 if st.button("Predict"):
     revenue, spend, profit = predict(converted_calls)
-    
-    st.success(f"📊 **Predicted Revenue (Daily):** ${revenue:,.2f}")
-    st.info(f"💰 **Predicted Spend (Daily):** ${spend:,.2f}")
-    st.warning(f"📈 **Predicted Profit (Daily):** ${profit:,.2f}")
-    
+
     # Calculate expected weekly values
     weekly_revenue, weekly_spend, weekly_profit = calculate_weekly_values(revenue, spend, profit)
-    
-    st.success(f"📊 **Expected Weekly Revenue:** ${weekly_revenue:,.2f}")
-    st.info(f"💰 **Expected Weekly Spend:** ${weekly_spend:,.2f}")
-    st.warning(f"📈 **Expected Weekly Profit:** ${weekly_profit:,.2f}")
 
     # Create two columns for displaying daily and weekly predictions side by side
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown("### **Daily Predictions**")
-        st.bar_chart(pd.DataFrame({
+        daily_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [revenue, spend, profit]
-        }).set_index("Prediction"))
-    
+        }).set_index("Prediction")
+        
+        # Bar chart with gradient blue color for daily predictions
+        st.bar_chart(daily_data["Amount"], color=["#0076d6", "#3385d6", "#66a3ff"])
+
     with col2:
         st.markdown("### **Weekly Predictions**")
-        st.bar_chart(pd.DataFrame({
+        weekly_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
-        }).set_index("Prediction"))
+        }).set_index("Prediction")
+        
+        # Bar chart with different gradient blue color for weekly predictions
+        st.bar_chart(weekly_data["Amount"], color=["#005fa3", "#0066b3", "#0076d6"])
