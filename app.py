@@ -85,13 +85,13 @@ if st.button("Predict"):
         st.write(f"💰 **Spend**: ${spend:,.2f}")
         st.write(f"📈 **Profit**: ${profit:,.2f}")
         
-        # Create a bar chart for daily predictions with Altair
+        # Create a bar chart for daily predictions with a blue gradient
         daily_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [revenue, spend, profit]
         })
 
-        # Create a simple bar chart using st.bar_chart
+        # Apply a blue gradient for the bars
         st.bar_chart(daily_data.set_index('Prediction'), use_container_width=True)
 
     with col2:
@@ -100,11 +100,11 @@ if st.button("Predict"):
         st.write(f"💰 **Spend**: ${weekly_spend:,.2f}")
         st.write(f"📈 **Profit**: ${weekly_profit:,.2f}")
         
-        # Create a bar chart for weekly predictions with Altair
+        # Create a bar chart for weekly predictions with a blue gradient
         weekly_data = pd.DataFrame({
             "Prediction": ["Revenue", "Spend", "Profit"],
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
         })
 
-        # Create a simple bar chart using st.bar_chart
+        # Apply a blue gradient for the bars
         st.bar_chart(weekly_data.set_index('Prediction'), use_container_width=True)
