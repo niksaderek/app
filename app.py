@@ -99,6 +99,7 @@ if st.button("Predict"):
             y='Amount',
             color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#0076d6', '#3385d6', '#66a3ff']))
         )
+        # Ensure the chart takes up more space
         st.altair_chart(daily_chart, use_container_width=True)
 
     with col2:
@@ -121,6 +122,7 @@ if st.button("Predict"):
             y='Amount',
             color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
         )
+        # Ensure the chart takes up more space
         st.altair_chart(weekly_chart, use_container_width=True)
 
     # Add space between columns and charts (through margin)
