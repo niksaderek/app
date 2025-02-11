@@ -91,16 +91,8 @@ if st.button("Predict"):
             "Amount": [revenue, spend, profit]
         })
 
-        # Format the values in the chart (rounded and thousand separator)
-        daily_data['Amount'] = daily_data['Amount'].apply(lambda x: f"${x:,.2f}")
-
-        daily_chart = alt.Chart(daily_data).mark_bar().encode(
-            x='Prediction',
-            y='Amount',
-            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#0076d6', '#3385d6', '#66a3ff']))
-        )
-        # Ensure the chart takes up more space
-        st.altair_chart(daily_chart, use_container_width=True)
+        # Create a simple bar chart using st.bar_chart
+        st.bar_chart(daily_data.set_index('Prediction'), use_container_width=True)
 
     with col2:
         st.markdown("### **Weekly Predictions**")
@@ -114,22 +106,5 @@ if st.button("Predict"):
             "Amount": [weekly_revenue, weekly_spend, weekly_profit]
         })
 
-        # Format the values in the chart (rounded and thousand separator)
-        weekly_data['Amount'] = weekly_data['Amount'].apply(lambda x: f"${x:,.2f}")
-
-        weekly_chart = alt.Chart(weekly_data).mark_bar().encode(
-            x='Prediction',
-            y='Amount',
-            color=alt.Color('Prediction', scale=alt.Scale(domain=['Revenue', 'Spend', 'Profit'], range=['#005fa3', '#0066b3', '#0076d6']))
-        )
-        # Ensure the chart takes up more space
-        st.altair_chart(weekly_chart, use_container_width=True)
-
-    # Add space between columns and charts (through margin)
-    st.markdown("""
-        <style>
-            .stColumn {
-                margin-bottom: 40px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+        # Create a simple bar chart using st.bar_chart
+        st.bar_chart(weekly_data.set_index('Prediction'), use_container_width=True)
