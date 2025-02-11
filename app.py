@@ -65,8 +65,8 @@ st.session_state.converted_calls = converted_calls_input
 def clear_input():
     st.session_state.converted_calls = ""
 
-# Create columns for Predict and Clear buttons
-col1, col2 = st.columns([3, 1])
+# Create columns for Predict and Clear buttons side by side
+col1, col2 = st.columns([4, 1])
 
 with col1:
     predict_button = st.button("Predict")
